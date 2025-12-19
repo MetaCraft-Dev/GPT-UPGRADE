@@ -54,7 +54,7 @@
       }
     </script>
     <style>
-        body { background-color: #020410; color: #fff; font-family: system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; }
+        html, body { background-color: #020410; color: #fff; font-family: system-ui, -apple-system, sans-serif; -webkit-font-smoothing: antialiased; -moz-osx-font-smoothing: grayscale; overflow-x: hidden; width: 100%; touch-action: pan-y; -webkit-text-size-adjust: 100%; }
         .glass-nav { background: rgba(2, 4, 16, 0.6); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255, 255, 255, 0.05); }
         .glass-panel { background: rgba(255, 255, 255, 0.03); backdrop-filter: blur(20px); border: 1px solid rgba(255, 255, 255, 0.08); box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5); }
         .hero-gradient-text { background: linear-gradient(to right, #4facfe 0%, #00f2fe 50%, #f093fb 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
@@ -867,6 +867,22 @@
             }, { threshold: 0.1, rootMargin: '0px 0px -50px 0px' });
             reveals.forEach(el => observer.observe(el));
         });
+    </script>
+    <script>
+        document.addEventListener('gesturestart', function(e) { e.preventDefault(); });
+        document.addEventListener('gesturechange', function(e) { e.preventDefault(); });
+        document.addEventListener('gestureend', function(e) { e.preventDefault(); });
+
+        document.addEventListener('touchstart', function(event) {
+            if (event.touches.length > 1) { event.preventDefault(); }
+        }, { passive: false });
+
+        let lastTouchEnd = 0;
+        document.addEventListener('touchend', function(event) {
+            const now = (new Date()).getTime();
+            if (now - lastTouchEnd <= 300) { event.preventDefault(); }
+            lastTouchEnd = now;
+        }, false);
     </script>
 </body>
 </html>
